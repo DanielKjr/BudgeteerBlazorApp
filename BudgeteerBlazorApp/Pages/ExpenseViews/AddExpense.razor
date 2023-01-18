@@ -1,0 +1,75 @@
+﻿@page "/addexpense"
+@using System.Globalization;
+@inject IAddExpenseUseCase AddExpenseUseCase
+@inject NavigationManager NavigationManager
+
+<h3>Add Expense</h3>
+<br />
+
+@*take information from user*@
+<EditForm Model="expense" OnValidSubmit="SaveExpense" autocomplete="off">
+	@*	use the data validation defined in expense class*@
+	<DataAnnotationsValidator></DataAnnotationsValidator>
+	<ValidationSummary></ValidationSummary>
+
+
+	<div class="form-group">
+		<label for="name">Expense name</label>
+		<InputText id="name"
+				   @bind-Value=expense.ExpenseName
+				   class="form-control">
+		</InputText>
+	</div>
+
+	<div class="form-group">
+		<label for="cost">Cost</label>
+		<InputNumber id="cost"
+					 @bind-Value=expense.ExpenseCost
+					 class="form-control">
+		</InputNumber>
+	</div>
+
+	Frequency of expense
+	<InputSelect class="form-select" @bind-Value="expense.Interval">
+		
+		<option value="@ExpenseInterval.Monthly">Monthly</option>
+		<option value="@ExpenseInterval.Quarterly">Quarterly</option>
+		<option value="@ExpenseInterval.Yearly">Yearly</option>
+
+	</InputSelect>
+
+	<br />
+	<br />
+	<button type="submit"
+			class="btn btn-primary">
+		Save
+	</button>
+
+
+
+	<button type="button" class="btn btn-primary" @onclick="Cancel">Cancel</button>
+</EditForm>
+
+
+
+@code {
+
+	private Expense expense = new Expense();
+	
+
+	private async Task SaveExpense()
+	{
+		await AddExpenseUseCase.ExecuteAsync(expense);
+		NavigationManager.NavigateTo("/Expenses");
+	}
+	private void Cancel()
+	{
+		NavigationManager.NavigateTo("/Expenses");
+	}
+
+	private void ValidateInterval()
+	{
+
+	}
+
+}

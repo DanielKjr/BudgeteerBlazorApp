@@ -1,0 +1,39 @@
+﻿
+
+
+
+<div class="input-group">
+	@*use classes from wwwroot bootstrap*@
+	<input type="text"
+		class="form-control"
+		placeholder="Type expense name here to search" 
+		@bind-value="expenseNameToSearch" @onkeyup="@Enter"/>
+
+		<button
+			type="button" 
+			class="btn-success input-group-text"
+		@onclick="OnSearch">Search</button>
+
+		
+</div>
+
+
+@code {
+	private string expenseNameToSearch = string.Empty;
+
+	[Parameter]
+	public EventCallback<string> OnSearchExpense { get; set; }
+
+	private void OnSearch()
+	{
+		OnSearchExpense.InvokeAsync(expenseNameToSearch);
+	}
+
+	private void Enter(KeyboardEventArgs e)
+	{
+		if (e.Key == "Enter" && expenseNameToSearch != string.Empty)
+		{
+			OnSearch();
+		}
+	}
+}

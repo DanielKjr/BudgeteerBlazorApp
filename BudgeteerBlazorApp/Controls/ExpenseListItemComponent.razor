@@ -1,0 +1,35 @@
+﻿@inject NavigationManager NavigationManager
+@inject IDeleteExpenseByIdUseCase DeleteExpenseByUsecase
+
+@foreach (var expense in Expenses)
+{
+	<tr>
+		<td>@expense.ExpenseName</td>
+		<td>@expense.ExpenseCost.ToString("c")</td>
+		<td>@expense.Interval</td>
+		<td>
+			<button type="button"
+				class="btn btn-light"
+			@onclick="@(() => EditExpense(expense.ExpenseId))">Edit</button>
+			@*to call a method with a parameter, use => *@
+			@*onclick eventhandler is an EventCallback
+			EventCallback is a struct, which wraps around delegate, so we're suppose to assign a delegate
+			when triggering a method without parameters it is a delegate, but with parameters it is no longer a delegate.
+			Arrow function provides a delegate for the event*@
+		</td>
+	</tr>
+}
+
+
+@code {
+
+	[Parameter]
+	public List<Expense> Expenses { get; set; } = new List<Expense>();
+
+	private void EditExpense(int expenseId)
+	{
+		NavigationManager.NavigateTo($"/editexpense/{expenseId}");
+	}
+
+
+}

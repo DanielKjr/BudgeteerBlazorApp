@@ -1,0 +1,33 @@
+﻿@inject IViewExpensesByName ViewExpensesByName
+
+<table class="table">
+	<thead>
+		<tr>
+			<th>Name</th>
+			<th>Cost</th>
+			<th>Interval</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+
+		<ExpenseListItemComponent Expenses="listExpenses"></ExpenseListItemComponent>
+
+	</tbody>
+</table>
+
+
+
+@code {
+	private List<Expense> listExpenses = new List<Expense>();
+
+	[Parameter]
+	public string SearchTerm { get; set; } = string.Empty;
+
+	protected override async Task OnParametersSetAsync()
+	{
+		listExpenses = (await ViewExpensesByName.ExecuteAsync(this.SearchTerm)).ToList();
+	}
+
+	
+}

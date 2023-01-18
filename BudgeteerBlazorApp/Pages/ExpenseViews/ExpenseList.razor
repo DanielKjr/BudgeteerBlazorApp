@@ -1,0 +1,32 @@
+﻿@page "/Expenses"
+@inject NavigationManager NavigationManager
+
+
+<h3>ExpenseList</h3>
+<br />
+
+@*eventcallback from other component*@
+<SearchExpenseComponent OnSearchExpense="OnExpenseSearch"></SearchExpenseComponent>
+<br />
+<ExpenseListComponent SearchTerm="@searchTerm"></ExpenseListComponent>
+<br />
+<button 
+	type="button"
+	class="btn btn-primary"
+	@onclick="AddExpense">Add Expense</button>
+
+
+@code {
+	private string searchTerm = string.Empty;
+
+	private void OnExpenseSearch(string searchTerm)
+	{
+		this.searchTerm = searchTerm;
+	}
+
+
+	private void AddExpense()
+	{
+		NavigationManager.NavigateTo("/addexpense");
+	}
+}

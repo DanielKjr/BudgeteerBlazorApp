@@ -1,0 +1,32 @@
+﻿@page "/"
+
+<PageTitle>Index</PageTitle>
+<br />
+
+<h1>Welcome To Budgeteer</h1>
+@*<ul>*@
+	@*say this is c# code*@
+	@*@foreach(var exp in _expenses)
+	{
+		<li>
+			Name: @exp.ExpenseName, Interval: @exp.ExpenseInterval, Cost: @exp.ExpenseCost
+		</li>
+	}*@
+	
+@*</ul>*@
+
+@code{
+	//private List<Expense> _expenses = new List<Expense>();
+
+
+	////override the default oninitialize and return hard coded list
+	//protected override async Task OnInitializedAsync()
+	//{
+	//	//test to see if it updates as it should
+	//	_expenses = (await ViewExpensesByName.ExecuteAsync()).ToList();
+	//	var expense = new Expense { ExpenseId = 1, ExpenseCost = 405, ExpenseInterval = 3, ExpenseName = "Danmark" };
+
+	//	await EditExpenseUseCase.ExecuteAsync(expense);
+	//	_expenses = (await ViewExpensesByName.ExecuteAsync()).ToList();
+	//}
+}

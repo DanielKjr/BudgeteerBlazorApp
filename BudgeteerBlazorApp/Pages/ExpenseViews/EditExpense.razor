@@ -1,0 +1,84 @@
+﻿@page "/editexpense/{expenseId:int}"
+@*passing a parameter through to the page via navigation, and type limitation to 
+	ensure it is an int.
+*@
+@inject IViewExpenseByIdUseCase ViewExpenseByIdUseCase
+@inject NavigationManager NavigationManager
+@inject IEditExpenseUseCase EditExpenseUseCase
+@inject IDeleteExpenseByIdUseCase DeleteExpenseByIdUseCase
+
+<h3>EditExpense</h3>
+<br />
+
+<EditForm Model="expense" OnValidSubmit="SaveExpense" autocomplete="off" >
+	@*	use the data validation defined in expense class*@
+	<DataAnnotationsValidator></DataAnnotationsValidator>
+	<ValidationSummary></ValidationSummary>
+
+
+	<div class="form-group">
+		<label for="name">Expense name</label>
+		<InputText id="name"
+				   @bind-Value=expense.ExpenseName
+				   class="form-control">
+		</InputText>
+	</div>
+
+	<div class="form-group">
+		<label for="cost">Cost</label>
+		<InputNumber id="cost"
+					 @bind-Value=expense.ExpenseCost
+					 class="form-control">
+		</InputNumber>
+	</div>
+
+	<div class="form-group">
+		Frequency of expense
+		<InputSelect class="form-select" @bind-Value="expense.Interval">
+
+			<option value="@ExpenseInterval.Monthly">Monthly</option>
+			<option value="@ExpenseInterval.Quarterly">Quarterly</option>
+			<option value="@ExpenseInterval.Yearly">Yearly</option>
+
+		</InputSelect>
+	</div>
+	<br />
+	<button type="submit"
+			class="btn btn-primary">
+		Save
+	</button>
+
+	<button type="button" class="btn btn-primary" @onclick="Cancel">Cancel</button>
+	<button type="button" class="btn btn-primary" @onclick="Delete">Delete</button>
+	
+</EditForm>
+
+
+@code {
+
+	[Parameter]
+	public int expenseId { get; set; }
+
+	private Expense expense = new Expense();
+
+	protected override async Task OnParametersSetAsync()
+	{
+		this.expense = await ViewExpenseByIdUseCase.ExecuteAsync(this.expenseId);
+	}
+	private async Task SaveExpense()
+	{
+		await EditExpenseUseCase.ExecuteAsync(this.expense);
+		NavigationManager.NavigateTo("/Expenses");
+	}
+
+	private void Cancel()
+	{
+		NavigationManager.NavigateTo("/Expenses");
+	}
+
+	private void Delete()
+	{
+		DeleteExpenseByIdUseCase.ExecuteAsync(this.expense);
+		Cancel();
+	}
+}
