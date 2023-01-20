@@ -9,13 +9,18 @@ Console.WriteLine($"Database path: {db.DbPath}.");
 
 Console.WriteLine("Inserting new expense");
 
-//User user = db.Users.First(x => x.UserName == "Daniel");
+
 //db.Add(new User() { UserName = "Daniel" });
+User user = db.Users.First(x => x.UserName == "Daniel");
+
+if (user != null)
+{
+	user.Entries.Add(new ExpenseEntry() { ExpenseName = "Rent", Cost = 4000 });
+	db.SaveChanges();
+}
 
 
-//db.Add(new ExpenseEntry() { ExpenseName = "Rent", Cost = 4000});
 
-//db.SaveChanges();
 
 //post = db.Expenses.OrderBy(x => x.ExpenseId).First();
 

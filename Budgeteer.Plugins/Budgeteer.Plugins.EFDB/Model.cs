@@ -38,6 +38,8 @@ namespace Budgeteer.Plugins.EFDB
 		public int UserID { get; set; }
 		[Required]
 		public string UserName { get; set;} = string.Empty;
+
+		public ICollection<ExpenseEntry> Entries { get; set; } = new HashSet<ExpenseEntry>();
 	}
 
 
@@ -53,6 +55,7 @@ namespace Budgeteer.Plugins.EFDB
 
 		//Since theres no CLR property which holds the foreign key
 		//for this relationship, a shadow property is created
+		[Required]
 		public User User { get; set; } = new User();
 
 
