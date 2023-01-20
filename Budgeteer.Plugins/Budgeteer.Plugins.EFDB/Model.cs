@@ -53,8 +53,6 @@ namespace Budgeteer.Plugins.EFDB
 		[Required]
 		public int Cost { get; set; }
 
-		//Since theres no CLR property which holds the foreign key
-		//for this relationship, a shadow property is created
 		[Required]
 		public User User { get; set; } = new User();
 
