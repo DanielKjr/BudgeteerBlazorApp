@@ -11,54 +11,54 @@ namespace Budgeteer.Plugins.EFDB.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Expenses",
+                name: "Users",
                 columns: table => new
                 {
-                    ExpenseId = table.Column<int>(type: "INTEGER", nullable: false)
+                    UserID = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    ExpenseName = table.Column<string>(type: "TEXT", nullable: false)
+                    UserName = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Expenses", x => x.ExpenseId);
+                    table.PrimaryKey("PK_Users", x => x.UserID);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Entrys",
+                name: "Entries",
                 columns: table => new
                 {
                     EntryId = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Name = table.Column<string>(type: "TEXT", nullable: false),
-                    Content = table.Column<string>(type: "TEXT", nullable: false),
+                    ExpenseName = table.Column<string>(type: "TEXT", nullable: false),
+                    Cost = table.Column<int>(type: "INTEGER", nullable: false),
                     ExpenseId = table.Column<int>(type: "INTEGER", nullable: false),
-                    PostExpenseId = table.Column<int>(type: "INTEGER", nullable: false)
+                    UserID = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Entrys", x => x.EntryId);
+                    table.PrimaryKey("PK_Entries", x => x.EntryId);
                     table.ForeignKey(
-                        name: "FK_Entrys_Expenses_PostExpenseId",
-                        column: x => x.PostExpenseId,
-                        principalTable: "Expenses",
-                        principalColumn: "ExpenseId",
+                        name: "FK_Entries_Users_UserID",
+                        column: x => x.UserID,
+                        principalTable: "Users",
+                        principalColumn: "UserID",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Entrys_PostExpenseId",
-                table: "Entrys",
-                column: "PostExpenseId");
+                name: "IX_Entries_UserID",
+                table: "Entries",
+                column: "UserID");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Entrys");
+                name: "Entries");
 
             migrationBuilder.DropTable(
-                name: "Expenses");
+                name: "Users");
         }
     }
 }
