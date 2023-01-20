@@ -11,13 +11,12 @@ Console.WriteLine("Inserting new expense");
 
 
 //db.Add(new User() { UserName = "Daniel" });
-User user = db.Users.First(x => x.UserName == "Daniel");
+//User user = db.Users.First(x => x.UserName == "Daniel");
 
-if (user != null)
-{
-	user.Entries.Add(new ExpenseEntry() { ExpenseName = "Rent", Cost = 4000 });
-	db.SaveChanges();
-}
+
+//user.Entries.Add(new ExpenseEntry() { ExpenseName = "Rent", Cost = 4000 });
+//db.SaveChanges();
+
 
 
 
