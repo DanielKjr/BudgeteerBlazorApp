@@ -16,57 +16,56 @@ namespace Budgeteer.Plugins.EFDB.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.2");
 
-            modelBuilder.Entity("Budgeteer.Plugins.EFDB.Entry", b =>
+            modelBuilder.Entity("Budgeteer.Plugins.EFDB.ExpenseEntry", b =>
                 {
                     b.Property<int>("EntryId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Content")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("ExpenseId")
+                    b.Property<int>("Cost")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("PostExpenseId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("EntryId");
-
-                    b.HasIndex("PostExpenseId");
-
-                    b.ToTable("Entrys");
-                });
-
-            modelBuilder.Entity("Budgeteer.Plugins.EFDB.ExpensePost", b =>
-                {
                     b.Property<int>("ExpenseId")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("ExpenseName")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.HasKey("ExpenseId");
+                    b.Property<int>("UserID")
+                        .HasColumnType("INTEGER");
 
-                    b.ToTable("Expenses");
+                    b.HasKey("EntryId");
+
+                    b.HasIndex("UserID");
+
+                    b.ToTable("Entries");
                 });
 
-            modelBuilder.Entity("Budgeteer.Plugins.EFDB.Entry", b =>
+            modelBuilder.Entity("Budgeteer.Plugins.EFDB.User", b =>
                 {
-                    b.HasOne("Budgeteer.Plugins.EFDB.ExpensePost", "Post")
+                    b.Property<int>("UserID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("UserID");
+
+                    b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("Budgeteer.Plugins.EFDB.ExpenseEntry", b =>
+                {
+                    b.HasOne("Budgeteer.Plugins.EFDB.User", "User")
                         .WithMany()
-                        .HasForeignKey("PostExpenseId")
+                        .HasForeignKey("UserID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Post");
+                    b.Navigation("User");
                 });
 #pragma warning restore 612, 618
         }
