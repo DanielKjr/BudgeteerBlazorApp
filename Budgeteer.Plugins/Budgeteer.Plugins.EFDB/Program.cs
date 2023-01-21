@@ -1,13 +1,15 @@
 ﻿
 
 using Budgeteer.Plugins.EFDB;
+using Budgeteer.Plugins.Encryption;
 using Microsoft.EntityFrameworkCore.Sqlite;
 
 using var db = new ExpenseContext();
 
-Console.WriteLine($"Database path: {db.DbPath}.");
+#region dbTestLines
+//Console.WriteLine($"Database path: {db.DbPath}.");
 
-Console.WriteLine("Inserting new expense");
+//Console.WriteLine("Inserting new expense");
 
 
 //db.Add(new User() { UserName = "Daniel" });
@@ -25,14 +27,28 @@ Console.WriteLine("Inserting new expense");
 
 //db.SaveChanges();
 
-Console.WriteLine("Querying for an expensepost");
+//Console.WriteLine("Querying for an expensepost");
 //var entry = db.Entries.OrderBy(x => x.ExpenseId).Last();
-
-
 
 //var post = db.Expenses.OrderBy(x => x.ExpenseId).First();
 
 //Console.WriteLine("ID: " + post.ExpenseId + "\nName: " + post.ExpenseName);
+#endregion
 
+#region EncryptionTests
+string password;
+string salt;
+
+Console.WriteLine("Write a password");
+password = Console.ReadLine();
+salt = EncryptionHandler.GetRandomSalt();
+
+Console.WriteLine($"The salt: {salt}\n");
+
+string hashPassword = EncryptionHandler.HashPassword(password, salt);
+
+Console.WriteLine($"Password: {password}\nSalt: {salt}\nHashedPassword: {hashPassword}");
+
+#endregion
 
 Console.ReadLine();

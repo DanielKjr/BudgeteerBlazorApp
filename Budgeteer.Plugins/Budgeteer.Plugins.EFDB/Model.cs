@@ -40,6 +40,7 @@ namespace Budgeteer.Plugins.EFDB
 		public string UserName { get; set;} = string.Empty;
 
 		public ICollection<ExpenseEntry> Entries { get; set; } = new HashSet<ExpenseEntry>();
+
 	}
 
 
@@ -54,12 +55,26 @@ namespace Budgeteer.Plugins.EFDB
 		public int Cost { get; set; }
 
 		[Required]
-		public User User { get; set; } = new User();
+		public User? User { get; set; } 
 
 
 
 		
 		public int ExpenseId { get; set; }
+
+	}
+
+	public class UserSalt
+	{
+		[Key]
+		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+		public int SaltId { get; set; }
+
+		[Required]
+		public string Salt { get; set; } = string.Empty;
+
+		[Required]
+		public User? User { get; set; }
 
 	}
 }

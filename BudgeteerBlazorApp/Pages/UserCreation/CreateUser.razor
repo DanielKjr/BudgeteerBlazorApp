@@ -1,0 +1,48 @@
+﻿<h3>Create Account</h3>
+<br />
+
+<EditForm Model="account" OnValidSubmit="SaveUser" autocomplete="off">
+	@*	use the data validation defined in expense class*@
+	<DataAnnotationsValidator></DataAnnotationsValidator>
+	<ValidationSummary></ValidationSummary>
+
+
+	<div class="form-group">
+		<label for="name">Expense name</label>
+		<InputText id="name"
+				   @bind-Value=account.Name
+				   class="form-control">
+		</InputText>
+	</div>
+
+	<div class="form-group">
+		<label for="cost">Cost</label>
+		<InputText id="password"
+					 @bind-Value=toBeEncrypted
+					 class="form-control">
+		</InputText>
+	</div>
+
+
+	<br />
+	<br />
+	<button type="submit"
+			class="btn btn-primary">
+		Save
+	</button>
+
+
+
+	
+</EditForm>
+
+@code {
+	ExpenseAccount account = new ExpenseAccount();
+	private string toBeEncrypted = string.Empty;
+
+
+	private void SaveUser()
+	{
+		
+	}
+}

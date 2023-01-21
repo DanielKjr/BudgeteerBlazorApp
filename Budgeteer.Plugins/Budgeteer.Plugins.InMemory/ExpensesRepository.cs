@@ -11,13 +11,7 @@ namespace Budgeteer.Plugins.InMemory
 		public ExpensesRepository()
 		{
 			_expenses= new List<Expense>();
-			//_expenses = new List<Expense>()
-			//{
-			//	new Expense{ExpenseId= 1, ExpenseCost= 400, ExpenseInterval=3, ExpenseName = "Danmark" },
-			//	new Expense{ExpenseId= 2, ExpenseCost= 4000, ExpenseInterval=1, ExpenseName = "Husleje" },
-			//	new Expense{ExpenseId= 3, ExpenseCost= 200, ExpenseInterval=1, ExpenseName = "Linser" },
-			//	new Expense{ExpenseId= 4, ExpenseCost= 100, ExpenseInterval=12, ExpenseName = "RandersBolig" }
-			//};
+
 		}
 
 		public Task AddExpenseAsync(Expense expense)
@@ -40,6 +34,12 @@ namespace Budgeteer.Plugins.InMemory
 
 
 			_expenses.Add(expense);
+			return Task.CompletedTask;
+		}
+
+		public  Task AddUserAsync(ExpenseAccount account)
+		{
+			//TODO create user and add to database with hashed password, salt in other table
 			return Task.CompletedTask;
 		}
 

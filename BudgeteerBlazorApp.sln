@@ -13,7 +13,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Budgeteer.Plugins", "Budget
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Budgeteer.Plugins.InMemory", "Budgeteer.Plugins\Budgeteer.Plugins.InMemory\Budgeteer.Plugins.InMemory.csproj", "{7762B3D5-3C21-4EA6-B4C9-5727B2D57233}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Budgeteer.Plugins.EFDB", "Budgeteer.Plugins\Budgeteer.Plugins.EFDB\Budgeteer.Plugins.EFDB.csproj", "{DCB586A8-2798-4360-9276-0BC05D133E4C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Budgeteer.Plugins.EFDB", "Budgeteer.Plugins\Budgeteer.Plugins.EFDB\Budgeteer.Plugins.EFDB.csproj", "{DCB586A8-2798-4360-9276-0BC05D133E4C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Budgeteer.Plugins.Encryption", "Budgeteer.Plugins\Budgeteer.Plugins.Encryption\Budgeteer.Plugins.Encryption.csproj", "{A81795B5-C529-4B79-B78B-8C5943E443F3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,6 +43,10 @@ Global
 		{DCB586A8-2798-4360-9276-0BC05D133E4C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DCB586A8-2798-4360-9276-0BC05D133E4C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DCB586A8-2798-4360-9276-0BC05D133E4C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A81795B5-C529-4B79-B78B-8C5943E443F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A81795B5-C529-4B79-B78B-8C5943E443F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A81795B5-C529-4B79-B78B-8C5943E443F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A81795B5-C529-4B79-B78B-8C5943E443F3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -48,6 +54,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{7762B3D5-3C21-4EA6-B4C9-5727B2D57233} = {B146AF55-00DD-41F7-9D81-8093CF33D1C7}
 		{DCB586A8-2798-4360-9276-0BC05D133E4C} = {B146AF55-00DD-41F7-9D81-8093CF33D1C7}
+		{A81795B5-C529-4B79-B78B-8C5943E443F3} = {B146AF55-00DD-41F7-9D81-8093CF33D1C7}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6158C483-7E69-435A-A86A-6F5F10B69CC0}

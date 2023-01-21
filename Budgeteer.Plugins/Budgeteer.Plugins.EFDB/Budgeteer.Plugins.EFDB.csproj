@@ -17,4 +17,8 @@
     <Folder Include="Migrations\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Budgeteer.Plugins.Encryption\Budgeteer.Plugins.Encryption.csproj" />
+  </ItemGroup>
+
 </Project>
