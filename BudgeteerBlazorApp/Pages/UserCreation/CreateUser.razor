@@ -46,14 +46,9 @@
 </EditForm>
 
 @code {
-	ExpenseAccount account = new ExpenseAccount();
 	AccountCreation newAcc = new AccountCreation();
-
 	ExpenseContext context = new ExpenseContext();
 
-	private bool nameIsTaken = false;
-	private string toBeEncrypted = string.Empty;
-	private string comparisonString = string.Empty;
 
 	private void SaveUser()
 	{
@@ -80,61 +75,8 @@
 			newAcc.Name = string.Empty;
 		}
 
-		//User user = new User()
-		//	{
-		//		UserName = newAcc.Name,
-		//		HashedPassword = Budgeteer.Plugins.Encryption.EncryptionHandler.HashPassword(newAcc.Password, newAcc.Salt)
-		//	};
-
-		//foreach (var item in context.Users)
-		//{
-		//	if (item.UserName == newAcc.Name)
-		//	{
-		//		newAcc.CompareName = string.Empty;
-		//		//newAcc.Name = string.Empty;
-		//		nameIsTaken = true;
-		//	}
-		//}
-
-		//if (!nameIsTaken)
-		//{
-		//	context.Add(user);
-
-		//	context.Add(new UserSalt() { Salt = newAcc.Salt, User = user });
-		//	context.SaveChanges();
-		//}
-		//else
-		//{
-		//	newAcc.Name = string.Empty;
-		//	nameIsTaken = false;
-		//	//EC.Validate();
-		//}
-
-
-
-
-		//else
-		//{
-
-		//	newAcc.Name = string.Empty;
-		//	//User user = new User()
-		//	//	{
-		//	//		UserName = newAcc.Name,
-		//	//		HashedPassword = Budgeteer.Plugins.Encryption.EncryptionHandler.HashPassword(newAcc.Password, newAcc.Salt)
-		//	//	};
-		//	//context.Add(user);
-
-		//	//context.Add(new UserSalt() { Salt = newAcc.Salt, User = user });
-
-		//	//context.SaveChanges();
-		//}
-
 
 	}
 
-	private void ResetCharacterComparison()
-	{
-		newAcc.CompareName = string.Empty;
-		//EC.Validate();
-	}
+
 }

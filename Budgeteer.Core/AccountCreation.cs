@@ -5,12 +5,8 @@ namespace Budgeteer.Core
 	public class AccountCreation
 	{
 		[Required]
-		[MinLength(5, ErrorMessage ="Name must be longer than 5characters. Or name is already taken.")]
+		[MinLength(5, ErrorMessage ="Name must be longer than 5characters.")]
 		public string Name { get; set; } = string.Empty;
-
-		
-		//[Compare("Name", ErrorMessage = "Name is already taken.")]
-		public string CompareName { get; set; } = string.Empty;
 
 
 		[Required]
@@ -24,7 +20,7 @@ namespace Budgeteer.Core
 		[Required]
 		public int Id { get; set; }
 
-		//[Required]
+		//generated in the CreateUser page
 		public string Salt { get; set; } = string.Empty;
 
 	}
