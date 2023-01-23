@@ -21,9 +21,14 @@ namespace Budgeteer.Plugins.EFDB
 
 		public ExpenseContext()
 		{
+#if DEBUG
 			var folder = Environment.SpecialFolder.LocalApplicationData;
 			var path = Environment.GetFolderPath(folder);
 			DbPath = System.IO.Path.Join(path, "expenses.db");
+#endif
+#if RELEASE
+			DbPath = System.IO.Path.Combine(Environment.CurrentDirectory, "expenses.db");
+#endif
 		}
 
 		protected override void OnConfiguring(DbContextOptionsBuilder options)
