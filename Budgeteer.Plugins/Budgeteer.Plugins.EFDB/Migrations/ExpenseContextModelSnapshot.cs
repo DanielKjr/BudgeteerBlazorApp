@@ -48,6 +48,10 @@ namespace Budgeteer.Plugins.EFDB.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("HashedPassword")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("UserName")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -57,7 +61,38 @@ namespace Budgeteer.Plugins.EFDB.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("Budgeteer.Plugins.EFDB.UserSalt", b =>
+                {
+                    b.Property<int>("SaltId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Salt")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("UserID")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("SaltId");
+
+                    b.HasIndex("UserID");
+
+                    b.ToTable("Salts");
+                });
+
             modelBuilder.Entity("Budgeteer.Plugins.EFDB.ExpenseEntry", b =>
+                {
+                    b.HasOne("Budgeteer.Plugins.EFDB.User", "User")
+                        .WithMany("Entries")
+                        .HasForeignKey("UserID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Budgeteer.Plugins.EFDB.UserSalt", b =>
                 {
                     b.HasOne("Budgeteer.Plugins.EFDB.User", "User")
                         .WithMany()
@@ -66,6 +101,11 @@ namespace Budgeteer.Plugins.EFDB.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Budgeteer.Plugins.EFDB.User", b =>
+                {
+                    b.Navigation("Entries");
                 });
 #pragma warning restore 612, 618
         }

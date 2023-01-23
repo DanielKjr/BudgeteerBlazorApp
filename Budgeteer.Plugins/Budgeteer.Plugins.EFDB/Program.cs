@@ -36,18 +36,18 @@ using var db = new ExpenseContext();
 #endregion
 
 #region EncryptionTests
-string password;
-string salt;
+//string password;
+//string salt;
 
-Console.WriteLine("Write a password");
-password = Console.ReadLine();
-salt = EncryptionHandler.GetRandomSalt();
+//Console.WriteLine("Write a password");
+//password = Console.ReadLine();
+//salt = EncryptionHandler.GetRandomSalt();
 
-Console.WriteLine($"The salt: {salt}\n");
+//Console.WriteLine($"The salt: {salt}\n");
 
-string hashPassword = EncryptionHandler.HashPassword(password, salt);
+//string hashPassword = EncryptionHandler.HashPassword(password, salt);
 
-Console.WriteLine($"Password: {password}\nSalt: {salt}\nHashedPassword: {hashPassword}");
+//Console.WriteLine($"Password: {password}\nSalt: {salt}\nHashedPassword: {hashPassword}");
 
 #endregion
 

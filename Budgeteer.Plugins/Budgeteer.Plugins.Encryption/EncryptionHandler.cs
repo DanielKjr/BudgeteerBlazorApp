@@ -24,7 +24,7 @@ namespace Budgeteer.Plugins.Encryption
 		/// </summary>
 		/// <param name="size"></param>
 		/// <returns></returns>
-		public static string GetRandomSalt(int size =12)
+		public static string GetRandomSalt(int size =32)
 		{
 			
 			byte[]salt = new byte[size];

@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Budgeteer.Plugins\Budgeteer.Plugins.Encryption\Budgeteer.Plugins.Encryption.csproj" />
+  </ItemGroup>
+
 </Project>

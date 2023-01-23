@@ -15,6 +15,7 @@ namespace Budgeteer.Plugins.EFDB
 	{
 		public DbSet<User> Users { get; set; }
 		public DbSet<ExpenseEntry> Entries { get; set; }
+		public DbSet<UserSalt> Salts { get; set; }
 
 		public string DbPath { get; } = string.Empty;
 
@@ -39,6 +40,8 @@ namespace Budgeteer.Plugins.EFDB
 		[Required]
 		public string UserName { get; set;} = string.Empty;
 
+		[Required]
+		public string HashedPassword { get; set;} = string.Empty;
 		public ICollection<ExpenseEntry> Entries { get; set; } = new HashSet<ExpenseEntry>();
 
 	}

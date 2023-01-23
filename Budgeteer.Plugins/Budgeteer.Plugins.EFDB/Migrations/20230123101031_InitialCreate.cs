@@ -16,7 +16,8 @@ namespace Budgeteer.Plugins.EFDB.Migrations
                 {
                     UserID = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    UserName = table.Column<string>(type: "TEXT", nullable: false)
+                    UserName = table.Column<string>(type: "TEXT", nullable: false),
+                    HashedPassword = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -31,8 +32,8 @@ namespace Budgeteer.Plugins.EFDB.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     ExpenseName = table.Column<string>(type: "TEXT", nullable: false),
                     Cost = table.Column<int>(type: "INTEGER", nullable: false),
-                    ExpenseId = table.Column<int>(type: "INTEGER", nullable: false),
-                    UserID = table.Column<int>(type: "INTEGER", nullable: false)
+                    UserID = table.Column<int>(type: "INTEGER", nullable: false),
+                    ExpenseId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -45,9 +46,34 @@ namespace Budgeteer.Plugins.EFDB.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Salts",
+                columns: table => new
+                {
+                    SaltId = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Salt = table.Column<string>(type: "TEXT", nullable: false),
+                    UserID = table.Column<int>(type: "INTEGER", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Salts", x => x.SaltId);
+                    table.ForeignKey(
+                        name: "FK_Salts_Users_UserID",
+                        column: x => x.UserID,
+                        principalTable: "Users",
+                        principalColumn: "UserID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Entries_UserID",
                 table: "Entries",
+                column: "UserID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Salts_UserID",
+                table: "Salts",
                 column: "UserID");
         }
 
@@ -56,6 +82,9 @@ namespace Budgeteer.Plugins.EFDB.Migrations
         {
             migrationBuilder.DropTable(
                 name: "Entries");
+
+            migrationBuilder.DropTable(
+                name: "Salts");
 
             migrationBuilder.DropTable(
                 name: "Users");
