@@ -68,6 +68,7 @@
 
 			context.Add(new UserSalt() { Salt = newAcc.Salt, User = user });
 			context.SaveChanges();
+			NavigationManager.NavigateTo("/login", true);
 
 		}
 		else

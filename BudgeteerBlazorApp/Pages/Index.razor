@@ -3,7 +3,14 @@
 <PageTitle>Index</PageTitle>
 <br />
 
-<h1>Welcome To Budgeteer</h1>
+<AuthorizeView>
+	<Authorized>
+		<h1>Hello, @context.User.Identity.Name!</h1>
+	</Authorized>
+	<NotAuthorized>
+		<h1>Hello guest</h1>
+	</NotAuthorized>
+</AuthorizeView>
 @*<ul>*@
 	@*say this is c# code*@
 	@*@foreach(var exp in _expenses)
@@ -16,6 +23,9 @@
 @*</ul>*@
 
 @code{
+
+	[CascadingParameter]
+	private Task<AuthenticationState> authenticationState { get; set; }
 	//private List<Expense> _expenses = new List<Expense>();
 
 
