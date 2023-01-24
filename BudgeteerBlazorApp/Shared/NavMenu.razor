@@ -1,40 +1,72 @@
-﻿<div class="top-row ps-3 navbar navbar-dark">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="">BudgeteerBlazorApp</a>
-        <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-    </div>
+﻿@inject UserSession userSession
+<div class="top-row ps-3 navbar navbar-dark">
+	<div class="container-fluid">
+		<a class="navbar-brand" href="">BudgeteerBlazorApp</a>
+		<button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+	</div>
 </div>
 
 <div class="@NavMenuCssClass nav-scrollable" @onclick="ToggleNavMenu">
-    <nav class="flex-column">
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="oi oi-home" aria-hidden="true"></span> Home
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="Expenses">
-                <span class="oi oi-plus" aria-hidden="true"></span> Expenses
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="createUser">
-                <span class="oi oi-plus" aria-hidden="true"></span> CreateAccount
-            </NavLink>
-        </div>
-      
-    </nav>
+	<nav class="flex-column">
+		<div class="nav-item px-3">
+			<NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+				<span class="oi oi-home" aria-hidden="true"></span> Home
+			</NavLink>
+		</div>	
+		@if (!userSession.IsLoggedIn)
+		{
+			<div class="nav-item px-3">
+			<NavLink class="nav-link" href="login">
+				<span class="oi oi-plus" aria-hidden="true"></span> Login
+			</NavLink>
+		</div>
+			<div class="nav-item px-3">
+				<NavLink class="nav-link" href="createUser">
+					<span class="oi oi-plus" aria-hidden="true"></span> CreateAccount
+				</NavLink>
+			</div>
+		}
+		else
+		{
+			<div class="nav-item px-3">
+				<NavLink class="nav-link" href="Expenses">
+					<span class="oi oi-plus" aria-hidden="true"></span> Expenses
+				</NavLink>
+			</div>
+		}
+		
+		
+
+
+
+
+	</nav>
 </div>
 
 @code {
-    private bool collapseNavMenu = true;
+	private bool collapseNavMenu = true;
 
-    private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+	private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
 
-    private void ToggleNavMenu()
-    {
-        collapseNavMenu = !collapseNavMenu;
-    }
+	private void ToggleNavMenu()
+	{
+		collapseNavMenu = !collapseNavMenu;
+	}
+
+	protected override void OnInitialized()
+	{
+		userSession.OnChange += OnMyChangeHandler;
+	}
+
+	public void Dispose()
+	{
+		userSession.OnChange -= OnMyChangeHandler;
+	}
+
+	private async void OnMyChangeHandler()
+	{
+		await InvokeAsync(() => StateHasChanged());
+	}
 }

@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Budgeteer.Plugins.InMemory"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Budgeteer.Plugins.EFDB", "Budgeteer.Plugins\Budgeteer.Plugins.EFDB\Budgeteer.Plugins.EFDB.csproj", "{DCB586A8-2798-4360-9276-0BC05D133E4C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Budgeteer.Plugins.Encryption", "Budgeteer.Plugins\Budgeteer.Plugins.Encryption\Budgeteer.Plugins.Encryption.csproj", "{A81795B5-C529-4B79-B78B-8C5943E443F3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Budgeteer.Plugins.Encryption", "Budgeteer.Plugins\Budgeteer.Plugins.Encryption\Budgeteer.Plugins.Encryption.csproj", "{A81795B5-C529-4B79-B78B-8C5943E443F3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

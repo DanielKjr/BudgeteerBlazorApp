@@ -1,0 +1,73 @@
+﻿@page "/login"
+@inject UserSession userSession
+@inject UserService userService
+@inject IJSRuntime js
+@inject AuthenticationStateProvider authenticationStateProvider
+@inject NavigationManager NavigationManager
+
+
+<h3>Login</h3>
+
+<EditForm Model="user" OnSubmit="Authenticate" autocomplete="off">
+	@*	use the data validation defined in expense class*@
+	<DataAnnotationsValidator></DataAnnotationsValidator>
+	<ValidationSummary></ValidationSummary>
+
+
+	<div class="form-group">
+		<label for="name">Name</label>
+		<InputText id="name"
+				   @bind-Value=user.UserName
+				   class="form-control">
+		</InputText>
+	</div>
+
+	<div class="form-group">
+		<label for="cost">Password</label>
+		<InputText id="password"
+				   @bind-Value=userInput
+				   class="form-control">
+		</InputText>
+	</div>
+
+
+	<br />
+	<br />
+	<button type="submit"
+			class="btn btn-primary">
+		Login
+	</button>
+
+
+
+
+</EditForm>
+
+@code {
+	private User user = new User();
+	private string userInput = string.Empty;
+
+
+	private async Task Authenticate()
+	{
+		var userAccount = userService.GetByUserName(user.UserName);
+		if (userAccount != null)
+		{
+			var userSalt = userService.GetSaltByUserReference(userAccount);
+			if (userSalt != null && userAccount.HashedPassword != Budgeteer.Plugins.Encryption.EncryptionHandler.HashPassword(userInput, userSalt.Salt))
+			{
+				await js.InvokeVoidAsync("alert", "Invalid user name or password.");
+				return;
+			}
+		}
+
+		var customAuthenticationStateProvider = (CustomAuthenticationStateProvider)authenticationStateProvider;
+		await customAuthenticationStateProvider.UpdateUthenticationState(new UserSession
+			{
+				UserName = userAccount.UserName
+			});
+		userSession.IsLoggedIn = true;
+		NavigationManager.NavigateTo("/", true);
+
+	}
+}

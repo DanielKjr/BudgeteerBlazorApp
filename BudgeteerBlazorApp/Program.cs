@@ -2,7 +2,9 @@ using Budgeteer.Plugins.InMemory;
 using Budgeteer.UseCases;
 using Budgeteer.UseCases.Expenses;
 using Budgeteer.UseCases.PluginInterfaces;
+using BudgeteerBlazorApp.Authentication;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,7 +12,12 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
+builder.Services.AddAuthenticationCore();
 
+//user authentication
+builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
+builder.Services.AddScoped<UserService>();
+builder.Services.AddScoped<UserSession>();
 
 //Register mapping between abstraction and implementation
 //builder.Services.AddSingleton<IExpenseRepository, ExpensesRepository>();
