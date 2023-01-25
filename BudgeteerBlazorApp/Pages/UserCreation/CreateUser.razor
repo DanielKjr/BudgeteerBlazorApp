@@ -20,17 +20,23 @@
 
 	<div class="form-group">
 		<label for="cost">Password</label>
-		<InputText id="password"
+		<InputText type="password"
+				   placeholder="Password"
+				   id="password"
 				   @bind-Value=newAcc.Password
-				   class="form-control">
+				   class="form-control"
+				   autocomplete="off">
 		</InputText>
 	</div>
 
 	<div class="form-group">
 		<label for="cost">Repeat password</label>
-		<InputText id="comparison"
+		<InputText type="password"
+				   placeholder="Password"
+				   id="comparison"
 				   @bind-Value=newAcc.ConfirmPassword
-				   class="form-control">
+				   class="form-control"
+				   autocomplete="off">
 		</InputText>
 	</div>
 

@@ -24,9 +24,12 @@
 
 	<div class="form-group">
 		<label for="cost">Password</label>
-		<InputText id="password"
+		<InputText type="password"
+				   placeholder="Password" 
+				   id="password"
 				   @bind-Value=userInput
-				   class="form-control">
+				   class="form-control"
+				   autocomplete="off">
 		</InputText>
 	</div>
 
