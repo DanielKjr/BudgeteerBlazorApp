@@ -5,7 +5,8 @@
 
 <AuthorizeView>
 	<Authorized>
-		<h1>Hello, @context.User.Identity.Name!</h1>
+		@*this removed error warnings but not sure if it should be there, the ?s*@
+		<h1>Hello, @context?.User.Identity?.Name!</h1>
 	</Authorized>
 	<NotAuthorized>
 		<h1>Hello guest</h1>
@@ -25,7 +26,7 @@
 @code{
 
 	[CascadingParameter]
-	private Task<AuthenticationState> authenticationState { get; set; }
+	private Task<AuthenticationState>? authenticationState { get; set; }
 	//private List<Expense> _expenses = new List<Expense>();
 
 

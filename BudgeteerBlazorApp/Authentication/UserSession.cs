@@ -2,7 +2,7 @@
 {
 	public class UserSession
 	{
-		public event Action OnChange;
+		public event Action? OnChange;
 		private bool isLoggedIn;
 		public bool IsLoggedIn
 		{ get { return isLoggedIn; }

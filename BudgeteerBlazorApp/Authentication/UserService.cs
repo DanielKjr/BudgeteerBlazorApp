@@ -12,7 +12,16 @@ namespace BudgeteerBlazorApp.Authentication
 		public User? GetByUserName(string userName)
 		{
 			currentUser = context.Users.First(x => x.UserName == userName);
-			return currentUser;
+
+			if (currentUser != null)
+			{
+				return currentUser;
+			}
+			else
+			{
+				return null;
+			}
+			
 		}
 
 		public UserSalt? GetSaltByUserReference(User user)

@@ -25,7 +25,7 @@
 	<div class="form-group">
 		<label for="cost">Password</label>
 		<InputText type="password"
-				   placeholder="Password" 
+				   placeholder="Password"
 				   id="password"
 				   @bind-Value=userInput
 				   class="form-control"
@@ -53,24 +53,33 @@
 
 	private async Task Authenticate()
 	{
-		var userAccount = userService.GetByUserName(user.UserName);
-		if (userAccount != null)
+		try
 		{
-			var userSalt = userService.GetSaltByUserReference(userAccount);
-			if (userSalt != null && userAccount.HashedPassword != Budgeteer.Plugins.Encryption.EncryptionHandler.HashPassword(userInput, userSalt.Salt))
+			var userAccount = userService.GetByUserName(user.UserName);
+			if (userAccount != null)
 			{
-				await js.InvokeVoidAsync("alert", "Invalid user name or password.");
-				return;
+				var userSalt = userService.GetSaltByUserReference(userAccount);
+				if (userSalt != null && userAccount.HashedPassword != Budgeteer.Plugins.Encryption.EncryptionHandler.HashPassword(userInput, userSalt.Salt))
+				{
+					await js.InvokeVoidAsync("alert", "Invalid user name or password.");
+					return;
+				}
 			}
+
+			var customAuthenticationStateProvider = (CustomAuthenticationStateProvider)authenticationStateProvider;
+			await customAuthenticationStateProvider.UpdateUthenticationState(new UserSession
+				{
+					UserName = userAccount.UserName
+				});
+			userSession.IsLoggedIn = true;
+			NavigationManager.NavigateTo("/", true);
+		}
+		catch (Exception)
+		{
+
+			await js.InvokeVoidAsync("alert", "User not found. Please check your inputs");
 		}
 
-		var customAuthenticationStateProvider = (CustomAuthenticationStateProvider)authenticationStateProvider;
-		await customAuthenticationStateProvider.UpdateUthenticationState(new UserSession
-			{
-				UserName = userAccount.UserName
-			});
-		userSession.IsLoggedIn = true;
-		NavigationManager.NavigateTo("/", true);
 
 	}
 }
