@@ -1,4 +1,5 @@
 ﻿using Budgeteer.Core;
+using Budgeteer.Plugins.EFDB;
 using Budgeteer.UseCases.PluginInterfaces;
 
 namespace Budgeteer.Plugins.InMemory
@@ -7,10 +8,12 @@ namespace Budgeteer.Plugins.InMemory
 	{
 
 		private List<Expense> _expenses;
+		private ExpenseContext context;
 
 		public ExpensesRepository()
 		{
 			_expenses= new List<Expense>();
+			context = new ExpenseContext();
 
 		}
 
@@ -37,11 +40,26 @@ namespace Budgeteer.Plugins.InMemory
 			return Task.CompletedTask;
 		}
 
-		public  Task AddUserAsync(ExpenseAccount account)
-		{
-			//TODO create user and add to database with hashed password, salt in other table
-			return Task.CompletedTask;
-		}
+		public  Task AddUserAsync(AccountCreation account)
+		{			
+            var existingUserCount = context.Users.Count(x => x.UserName == account.Name);
+			if (existingUserCount == 0)
+			{
+				account.Salt = Encryption.EncryptionHandler.GetRandomSalt();
+				User newUser = new User()
+				{
+					UserName = account.Name,
+					HashedPassword = Encryption.EncryptionHandler.HashPassword(account.Password, account.Salt)
+				};
+
+				context.Add(newUser);
+				context.Add(new UserSalt() { Salt = account.Salt, User = newUser });
+				context.SaveChanges();
+              
+            }
+
+            return Task.CompletedTask;
+        }
 
 		public async Task<Expense> DeleteExpenseByIdAsync(int expenseId)
 		{

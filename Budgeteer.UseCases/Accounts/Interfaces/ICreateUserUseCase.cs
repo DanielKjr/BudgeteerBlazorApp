@@ -4,6 +4,6 @@ namespace Budgeteer.UseCases
 {
 	public interface ICreateUserUseCase
 	{
-		Task ExecuteAsync(ExpenseAccount account);
+		Task ExecuteAsync(AccountCreation account);
 	}
 }

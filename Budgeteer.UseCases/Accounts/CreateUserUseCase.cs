@@ -12,7 +12,7 @@ namespace Budgeteer.UseCases
 			this.expenseRepository = expenseRepository;
 		}
 
-		public async Task ExecuteAsync(ExpenseAccount account)
+		public async Task ExecuteAsync(AccountCreation account)
 		{
 			await this.expenseRepository.AddUserAsync(account);
 		}

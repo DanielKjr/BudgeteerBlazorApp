@@ -16,6 +16,6 @@ namespace Budgeteer.UseCases.PluginInterfaces
         Task<Expense> GetExpenseByIdAsync(int expenseId);
         Task<Expense> DeleteExpenseByIdAsync(int expenseId);
 
-        Task AddUserAsync(ExpenseAccount account);
+        Task AddUserAsync(AccountCreation account);
     }
 }

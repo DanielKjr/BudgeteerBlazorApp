@@ -1,5 +1,6 @@
 ﻿@page "/createUser"
 @inject NavigationManager NavigationManager
+@inject ICreateUserUseCase CreateUserUseCase
 <h3>Create Account</h3>
 <br />
 
@@ -47,35 +48,13 @@
 
 @code {
 	AccountCreation newAcc = new AccountCreation();
-	ExpenseContext context = new ExpenseContext();
 
 
-	private void SaveUser()
+	private async Task SaveUser()
 	{
-		newAcc.Salt = Budgeteer.Plugins.Encryption.EncryptionHandler.GetRandomSalt();
 
-		var existingUserCount = context.Users.Count(x => x.UserName == newAcc.Name);
-
-		if (existingUserCount == 0)
-		{
-			User user = new User()
-				{
-					UserName = newAcc.Name,
-					HashedPassword = Budgeteer.Plugins.Encryption.EncryptionHandler.HashPassword(newAcc.Password, newAcc.Salt)
-				};
-
-			context.Add(user);
-
-			context.Add(new UserSalt() { Salt = newAcc.Salt, User = user });
-			context.SaveChanges();
-			NavigationManager.NavigateTo("/login", true);
-
-		}
-		else
-		{
-			newAcc.Name = string.Empty;
-		}
-
+		await CreateUserUseCase.ExecuteAsync(newAcc);
+		NavigationManager.NavigateTo("/login", true);
 
 	}
 

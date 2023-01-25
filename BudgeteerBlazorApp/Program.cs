@@ -35,6 +35,7 @@ builder.Services.AddTransient<IAddExpenseUseCase, AddExpenseUseCase>();
 builder.Services.AddTransient<IEditExpenseUseCase, EditExpenseUseCase>();
 builder.Services.AddTransient<IViewExpenseByIdUseCase, ViewExpenseByIdUseCase>();
 builder.Services.AddTransient<IDeleteExpenseByIdUseCase, DeleteExpenseByIdUseCase>();
+builder.Services.AddTransient<ICreateUserUseCase, CreateUserUseCase>();
 
 
 //AddScoped -> another lifetime management 

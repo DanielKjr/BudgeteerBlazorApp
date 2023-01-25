@@ -6,11 +6,13 @@ namespace BudgeteerBlazorApp.Authentication
 	public class UserService
 	{	
 		private ExpenseContext context = new ExpenseContext();
-
+		//TODO use this as a way to track current user perhaps
+		private User? currentUser;
 
 		public User? GetByUserName(string userName)
 		{
-			return context.Users.First(x => x.UserName == userName);
+			currentUser = context.Users.First(x => x.UserName == userName);
+			return currentUser;
 		}
 
 		public UserSalt? GetSaltByUserReference(User user)
