@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Budgeteer.Plugins.EFDB.Migrations
 {
     [DbContext(typeof(ExpenseContext))]
-    [Migration("20230123101031_InitialCreate")]
+    [Migration("20230126114727_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -28,12 +28,12 @@ namespace Budgeteer.Plugins.EFDB.Migrations
                     b.Property<int>("Cost")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("ExpenseId")
-                        .HasColumnType("INTEGER");
-
                     b.Property<string>("ExpenseName")
                         .IsRequired()
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("Interval")
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("UserID")
                         .HasColumnType("INTEGER");

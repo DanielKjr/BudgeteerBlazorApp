@@ -59,7 +59,8 @@
 			if (userAccount != null)
 			{
 				var userSalt = userService.GetSaltByUserReference(userAccount);
-				if (userSalt != null && userAccount.HashedPassword != Budgeteer.Plugins.Encryption.EncryptionHandler.HashPassword(userInput, userSalt.Salt))
+				if (userSalt != null && 
+					userAccount.HashedPassword != Budgeteer.Plugins.Encryption.EncryptionHandler.HashPassword(userInput, userSalt.Salt))
 				{
 					await js.InvokeVoidAsync("alert", "Invalid user name or password.");
 					return;
@@ -76,7 +77,6 @@
 		}
 		catch (Exception)
 		{
-
 			await js.InvokeVoidAsync("alert", "User not found. Please check your inputs");
 		}
 

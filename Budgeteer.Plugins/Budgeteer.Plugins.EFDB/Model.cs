@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Budgeteer.Core;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -21,6 +22,7 @@ namespace Budgeteer.Plugins.EFDB
 
 		public ExpenseContext()
 		{
+			
 #if DEBUG
 			var folder = Environment.SpecialFolder.LocalApplicationData;
 			var path = Environment.GetFolderPath(folder);
@@ -63,12 +65,14 @@ namespace Budgeteer.Plugins.EFDB
 		public int Cost { get; set; }
 
 		[Required]
-		public User? User { get; set; } 
+		public virtual User? User { get; set; }
+
+		[Required]
+		public ExpenseInterval Interval { get; set; }
 
 
 
-		
-		public int ExpenseId { get; set; }
+
 
 	}
 

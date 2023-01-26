@@ -1,6 +1,7 @@
 ﻿@page "/createUser"
 @inject NavigationManager NavigationManager
 @inject ICreateUserUseCase CreateUserUseCase
+@inject IJSRuntime js
 <h3>Create Account</h3>
 <br />
 
@@ -58,10 +59,17 @@
 
 	private async Task SaveUser()
 	{
-
-		await CreateUserUseCase.ExecuteAsync(newAcc);
-		NavigationManager.NavigateTo("/login", true);
-
+		try
+		{
+			await CreateUserUseCase.ExecuteAsync(newAcc);
+			NavigationManager.NavigateTo("/login", true);
+		}
+		catch (Exception e)
+		{
+			await js.InvokeVoidAsync("alert", e.Message);
+			newAcc.Name = string.Empty;
+		}
+		
 	}
 
 

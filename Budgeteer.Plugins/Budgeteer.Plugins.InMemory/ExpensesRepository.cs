@@ -1,6 +1,7 @@
 ﻿using Budgeteer.Core;
 using Budgeteer.Plugins.EFDB;
 using Budgeteer.UseCases.PluginInterfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace Budgeteer.Plugins.InMemory
 {
@@ -12,38 +13,45 @@ namespace Budgeteer.Plugins.InMemory
 
 		public ExpensesRepository()
 		{
-			_expenses= new List<Expense>();
+			_expenses = new List<Expense>();
 			context = new ExpenseContext();
 
 		}
 
-		public Task AddExpenseAsync(Expense expense)
+		public async Task AddExpenseAsync(Expense expense, User currentUser)
 		{
-			if (_expenses.Any(x => x.ExpenseName.Equals(expense.ExpenseName, StringComparison.OrdinalIgnoreCase)))
-				return Task.CompletedTask;
-
-			if (_expenses.Count > 1)
+			var doesEntryExist = context.Entries.Any(x => x.ExpenseName == expense.ExpenseName && x.User.UserID == currentUser.UserID);
+			if (!doesEntryExist)
 			{
-				var maxId = _expenses.Max(x => x.ExpenseId);
+				
+				ExpenseEntry entry = new ExpenseEntry()
+				{
+					ExpenseName = expense.ExpenseName,
+					Cost = expense.ExpenseCost,
+					Interval = expense.Interval,
+					User = currentUser
+				};
 
-				expense.ExpenseId = maxId + 1;
+				//https://stackoverflow.com/questions/43500403/ef-core-sqlite-one-to-many-relationship-failing-on-unique-index-constraint
+				context.ChangeTracker.TrackGraph(entry, node => node.Entry.State = 
+				!node.Entry.IsKeySet ? EntityState.Added : EntityState.Unchanged);
+
+				await context.SaveChangesAsync();
 			}
 			else
 			{
-				expense.ExpenseId = 1;
+				await Task.FromException(new Exception("An entry with that name already exists"));
 			}
+
+				
 			
-
-
-
-			_expenses.Add(expense);
-			return Task.CompletedTask;
 		}
 
-		public  Task AddUserAsync(AccountCreation account)
-		{			
-            var existingUserCount = context.Users.Count(x => x.UserName == account.Name);
-			if (existingUserCount == 0)
+		public async Task AddUserAsync(AccountCreation account)
+		{
+			//Check if username is taken
+			var doesUserExist = context.Users.Any(x => x.UserName == account.Name);
+			if (!doesUserExist)
 			{
 				account.Salt = Encryption.EncryptionHandler.GetRandomSalt();
 				User newUser = new User()
@@ -54,12 +62,15 @@ namespace Budgeteer.Plugins.InMemory
 
 				context.Add(newUser);
 				context.Add(new UserSalt() { Salt = account.Salt, User = newUser });
-				context.SaveChanges();
-              
-            }
+				await context.SaveChangesAsync();
 
-            return Task.CompletedTask;
-        }
+			}
+			else
+			{
+				await Task.FromException(new Exception("Username is taken."));
+			}
+
+		}
 
 		public async Task<Expense> DeleteExpenseByIdAsync(int expenseId)
 		{
@@ -69,18 +80,18 @@ namespace Budgeteer.Plugins.InMemory
 
 			return await Task.FromResult(expense);
 
-			
+
 		}
 
 		public async Task<Expense> GetExpenseByIdAsync(int expenseId)
 		{
-			var expense = _expenses.First(x => x.ExpenseId == expenseId);
+			var expense = context.Entries.First(x => x.EntryId == expenseId);
 			//create new object to avoid it being a reference
 			var newExpense = new Expense
 			{
-				ExpenseId = expense.ExpenseId,
+				ExpenseId = expense.EntryId,
 				ExpenseName = expense.ExpenseName,
-				ExpenseCost = expense.ExpenseCost,
+				ExpenseCost = expense.Cost,
 				Interval = expense.Interval
 			};
 
@@ -93,6 +104,35 @@ namespace Budgeteer.Plugins.InMemory
 			if (string.IsNullOrWhiteSpace(name)) return await Task.FromResult(_expenses);
 
 			return _expenses.Where(x => x.ExpenseName.Contains(name, StringComparison.OrdinalIgnoreCase)).ToList();
+		}
+
+		public async Task<IEnumerable<Expense>> GetExpensesByUserReference(User currentUser)
+		{
+			//TODO implement in the expenselist or whichever plugin that shows expenses
+			var doesUserExist = context.Users.Any(x=> x.UserID== currentUser.UserID);
+			
+			if (doesUserExist && _expenses.Count == 0)
+			{
+				User user = context.Users.First(x => x.UserID == currentUser.UserID);
+				if (user.Entries.Count != 0)
+				{
+					foreach (ExpenseEntry entry in user.Entries)
+					{
+						_expenses.Add(new Expense
+						{
+							ExpenseId = entry.EntryId,
+							ExpenseName = entry.ExpenseName,
+							ExpenseCost = entry.Cost,
+							Interval = entry.Interval
+						});
+					}
+				}
+				
+				return await Task.FromResult(_expenses);
+			}
+
+			return _expenses;
+			
 		}
 
 		public Task UpdateExpenseAsync(Expense expense)

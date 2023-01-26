@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Budgeteer.Core\Budgeteer.Core.csproj" />
+    <ProjectReference Include="..\Budgeteer.Plugins\Budgeteer.Plugins.EFDB\Budgeteer.Plugins.EFDB.csproj" />
   </ItemGroup>
 
 </Project>

@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Budgeteer.Core;
+using Budgeteer.Plugins.EFDB;
+using Budgeteer.UseCases;
 using Budgeteer.UseCases.PluginInterfaces;
 
 namespace Budgeteer.UseCases
@@ -22,4 +24,6 @@ namespace Budgeteer.UseCases
             return await expenseRepository.GetExpensesByNameAsync(name);
         }
     }
+
+	
 }

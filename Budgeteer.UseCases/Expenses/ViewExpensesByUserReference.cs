@@ -7,20 +7,20 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Budgeteer.UseCases
+namespace Budgeteer.UseCases.Expenses
 {
-	public class AddExpenseUseCase : IAddExpenseUseCase
+	public class ViewExpensesByUserReference : IViewExpensesByUserReference
 	{
 		private readonly IExpenseRepository expenseRepository;
-		public AddExpenseUseCase(IExpenseRepository expenseRepository)
+
+		public ViewExpensesByUserReference(IExpenseRepository expenseRepository)
 		{
 			this.expenseRepository = expenseRepository;
 		}
 
-		public async Task ExecuteAsync(Expense expense, User currentUser)
+		public async Task<IEnumerable<Expense>> ExecuteAsync(User currentUser)
 		{
-			
-			await this.expenseRepository.AddExpenseAsync(expense, currentUser);
+			return await expenseRepository.GetExpensesByUserReference(currentUser);
 		}
 	}
 }

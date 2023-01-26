@@ -1,18 +1,24 @@
 ﻿@page "/addexpense"
 @using System.Globalization;
+@inject UserService userService
+@inject UserSession session
 @inject IAddExpenseUseCase AddExpenseUseCase
 @inject NavigationManager NavigationManager
+@inject AuthenticationStateProvider authenticationStateProvider
 
 <h3>Add Expense</h3>
 <br />
 
 @*take information from user*@
-<EditForm Model="expense" OnValidSubmit="SaveExpense" autocomplete="off">
+<AuthorizeView>
+	<Authorized>
+		<EditForm Model="expense" OnValidSubmit="SaveExpense" autocomplete="off" Context="context2">
 	@*	use the data validation defined in expense class*@
 	<DataAnnotationsValidator></DataAnnotationsValidator>
 	<ValidationSummary></ValidationSummary>
 
-
+			
+		
 	<div class="form-group">
 		<label for="name">Expense name</label>
 		<InputText id="name"
@@ -37,7 +43,7 @@
 		<option value="@ExpenseInterval.Yearly">Yearly</option>
 
 	</InputSelect>
-
+	
 	<br />
 	<br />
 	<button type="submit"
@@ -48,18 +54,27 @@
 
 
 	<button type="button" class="btn btn-primary" @onclick="Cancel">Cancel</button>
+
+	
 </EditForm>
+	</Authorized>
+</AuthorizeView>
+
 
 
 
 @code {
-
+	[CascadingParameter]
+	private Task<AuthenticationState>? authenticationState { get; set; }
 	private Expense expense = new Expense();
-	
 
 	private async Task SaveExpense()
 	{
-		await AddExpenseUseCase.ExecuteAsync(expense);
+		var customAuthenticationStateProvider = (CustomAuthenticationStateProvider)authenticationStateProvider;
+		await customAuthenticationStateProvider.GetAuthenticationStateAsync();
+	
+
+		await AddExpenseUseCase.ExecuteAsync(expense, userService.GetByUserName(authenticationState.Result.User.Identity.Name));
 		NavigationManager.NavigateTo("/Expenses");
 	}
 	private void Cancel()

@@ -33,7 +33,7 @@ namespace Budgeteer.Plugins.EFDB.Migrations
                     ExpenseName = table.Column<string>(type: "TEXT", nullable: false),
                     Cost = table.Column<int>(type: "INTEGER", nullable: false),
                     UserID = table.Column<int>(type: "INTEGER", nullable: false),
-                    ExpenseId = table.Column<int>(type: "INTEGER", nullable: false)
+                    Interval = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {

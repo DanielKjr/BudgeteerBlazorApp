@@ -18,6 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Budgeteer.Core\Budgeteer.Core.csproj" />
     <ProjectReference Include="..\Budgeteer.Plugins.Encryption\Budgeteer.Plugins.Encryption.csproj" />
   </ItemGroup>
 
