@@ -4,6 +4,8 @@
 @inject IJSRuntime js
 @inject AuthenticationStateProvider authenticationStateProvider
 @inject NavigationManager NavigationManager
+@inject IViewExpensesByUserReference ViewExpensesByUserReference
+
 
 
 <h3>Login</h3>
@@ -73,6 +75,7 @@
 					UserName = userAccount.UserName
 				});
 			userSession.IsLoggedIn = true;
+			await ViewExpensesByUserReference.ExecuteAsync(user);
 			NavigationManager.NavigateTo("/", true);
 		}
 		catch (Exception)

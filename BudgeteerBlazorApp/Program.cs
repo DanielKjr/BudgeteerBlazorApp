@@ -19,13 +19,16 @@ builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStat
 builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<UserSession>();
 
+//Data for current user
+builder.Services.AddScoped<IExpenseRepository, ExpensesRepository>();
+
 //Register mapping between abstraction and implementation
 //builder.Services.AddSingleton<IExpenseRepository, ExpensesRepository>();
 
 //Singleton
 //When application requires an instance of the implementation, it creates one and provides the instance
 //Also stores the instance in the application, which stays for as long as the app is running
-builder.Services.AddSingleton<IExpenseRepository, ExpensesRepository>();
+
 
 //Transient
 //Whenever we require an instance of a class, it will create one
@@ -36,6 +39,7 @@ builder.Services.AddTransient<IEditExpenseUseCase, EditExpenseUseCase>();
 builder.Services.AddTransient<IViewExpenseByIdUseCase, ViewExpenseByIdUseCase>();
 builder.Services.AddTransient<IDeleteExpenseByIdUseCase, DeleteExpenseByIdUseCase>();
 builder.Services.AddTransient<ICreateUserUseCase, CreateUserUseCase>();
+builder.Services.AddTransient<IViewExpensesByUserReference, ViewExpensesByUserReference>();
 
 
 //AddScoped -> another lifetime management 

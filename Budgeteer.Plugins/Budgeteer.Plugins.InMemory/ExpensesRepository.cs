@@ -20,10 +20,11 @@ namespace Budgeteer.Plugins.InMemory
 
 		public async Task AddExpenseAsync(Expense expense, User currentUser)
 		{
+
 			var doesEntryExist = context.Entries.Any(x => x.ExpenseName == expense.ExpenseName && x.User.UserID == currentUser.UserID);
 			if (!doesEntryExist)
 			{
-				
+
 				ExpenseEntry entry = new ExpenseEntry()
 				{
 					ExpenseName = expense.ExpenseName,
@@ -32,19 +33,23 @@ namespace Budgeteer.Plugins.InMemory
 					User = currentUser
 				};
 
-				//https://stackoverflow.com/questions/43500403/ef-core-sqlite-one-to-many-relationship-failing-on-unique-index-constraint
-				context.ChangeTracker.TrackGraph(entry, node => node.Entry.State = 
-				!node.Entry.IsKeySet ? EntityState.Added : EntityState.Unchanged);
+				//https://stackoverflow.com/questions/43500403/ef-core-sqlite-one-to-many-relationship-failing-on-unique-index-constraint			
+				context.ChangeTracker.TrackGraph(entry, node => node.Entry.State =
+	        	!node.Entry.IsKeySet ? EntityState.Added : EntityState.Unchanged);
+
 
 				await context.SaveChangesAsync();
+				//_expenses.Add(expense);
 			}
 			else
 			{
 				await Task.FromException(new Exception("An entry with that name already exists"));
 			}
 
-				
-			
+
+
+
+
 		}
 
 		public async Task AddUserAsync(AccountCreation account)
@@ -72,15 +77,12 @@ namespace Budgeteer.Plugins.InMemory
 
 		}
 
-		public async Task<Expense> DeleteExpenseByIdAsync(int expenseId)
+		public async Task DeleteExpenseByIdAsync(int expenseId)
 		{
-			var expense = _expenses.First(x => x.ExpenseId == expenseId);
-
-			_expenses.Remove(expense);
-
-			return await Task.FromResult(expense);
-
-
+			var expense = context.Entries.First(x => x.EntryId== expenseId);
+			context.Entries.Remove(expense);		
+			await context.SaveChangesAsync();
+	
 		}
 
 		public async Task<Expense> GetExpenseByIdAsync(int expenseId)
@@ -109,11 +111,14 @@ namespace Budgeteer.Plugins.InMemory
 		public async Task<IEnumerable<Expense>> GetExpensesByUserReference(User currentUser)
 		{
 			//TODO implement in the expenselist or whichever plugin that shows expenses
-			var doesUserExist = context.Users.Any(x=> x.UserID== currentUser.UserID);
-			
-			if (doesUserExist && _expenses.Count == 0)
+			var doesUserExist = context.Users.Any(x => x.UserID == currentUser.UserID);
+			_expenses.Clear();
+			if (doesUserExist)
 			{
+				
 				User user = context.Users.First(x => x.UserID == currentUser.UserID);
+				user.Entries = context.Entries.Where(e => e.User == user).ToList();
+
 				if (user.Entries.Count != 0)
 				{
 					foreach (ExpenseEntry entry in user.Entries)
@@ -127,12 +132,12 @@ namespace Budgeteer.Plugins.InMemory
 						});
 					}
 				}
-				
+
 				return await Task.FromResult(_expenses);
 			}
 
 			return _expenses;
-			
+
 		}
 
 		public Task UpdateExpenseAsync(Expense expense)

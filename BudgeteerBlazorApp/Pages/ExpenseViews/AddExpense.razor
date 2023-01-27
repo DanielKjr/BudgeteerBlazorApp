@@ -5,6 +5,7 @@
 @inject IAddExpenseUseCase AddExpenseUseCase
 @inject NavigationManager NavigationManager
 @inject AuthenticationStateProvider authenticationStateProvider
+@inject IJSRuntime js
 
 <h3>Add Expense</h3>
 <br />
@@ -70,12 +71,22 @@
 
 	private async Task SaveExpense()
 	{
+		//Can probably be neatly packed into a repository function, but for testing purposes
 		var customAuthenticationStateProvider = (CustomAuthenticationStateProvider)authenticationStateProvider;
 		await customAuthenticationStateProvider.GetAuthenticationStateAsync();
-	
 
-		await AddExpenseUseCase.ExecuteAsync(expense, userService.GetByUserName(authenticationState.Result.User.Identity.Name));
-		NavigationManager.NavigateTo("/Expenses");
+		try
+		{
+			await AddExpenseUseCase.ExecuteAsync(expense, userService.GetByUserName(authenticationState.Result.User.Identity.Name));
+			NavigationManager.NavigateTo("/Expenses");
+		}
+		catch (Exception)
+		{
+			await js.InvokeVoidAsync("alert", "Database function issue, try again");
+
+		}
+		
+		
 	}
 	private void Cancel()
 	{
