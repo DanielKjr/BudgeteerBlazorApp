@@ -34,7 +34,10 @@ namespace Budgeteer.Plugins.EFDB
 		}
 
 		protected override void OnConfiguring(DbContextOptionsBuilder options)
-		=> options.UseSqlite($"Data Source={DbPath}");
+		{
+			options.UseSqlite($"Data Source={DbPath}").UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
+		}
+		
 
 	}
 
