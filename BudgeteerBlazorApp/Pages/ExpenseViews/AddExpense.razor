@@ -80,9 +80,9 @@
 			await AddExpenseUseCase.ExecuteAsync(expense, userService.GetByUserName(authenticationState.Result.User.Identity.Name));
 			NavigationManager.NavigateTo("/Expenses");
 		}
-		catch (Exception)
+		catch (Exception e)
 		{
-			await js.InvokeVoidAsync("alert", "Database function issue, try again");
+			await js.InvokeVoidAsync("alert", e.Message);
 
 		}
 		

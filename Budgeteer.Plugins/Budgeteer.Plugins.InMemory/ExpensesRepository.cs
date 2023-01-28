@@ -18,6 +18,7 @@ namespace Budgeteer.Plugins.InMemory
 
 		}
 
+
 		public async Task AddExpenseAsync(Expense expense, User currentUser)
 		{
 			//This alongside the other comments somehow fixes the problem.
@@ -29,7 +30,7 @@ namespace Budgeteer.Plugins.InMemory
 
 				ExpenseEntry entry = new ExpenseEntry()
 				{
-					ExpenseName = expense.ExpenseName,
+					ExpenseName = Encryption.EncryptionHandler.Base64Encode(expense.ExpenseName),
 					Cost = expense.ExpenseCost,
 					Interval = expense.Interval,
 					User = currentUser
@@ -75,7 +76,7 @@ namespace Budgeteer.Plugins.InMemory
 				account.Salt = Encryption.EncryptionHandler.GetRandomSalt();
 				User newUser = new User()
 				{
-					UserName = account.Name,
+					UserName = Encryption.EncryptionHandler.Base64Encode(account.Name),
 					HashedPassword = Encryption.EncryptionHandler.HashPassword(account.Password, account.Salt)
 				};
 
@@ -139,7 +140,7 @@ namespace Budgeteer.Plugins.InMemory
 						_expenses.Add(new Expense
 						{
 							ExpenseId = entry.EntryId,
-							ExpenseName = entry.ExpenseName,
+							ExpenseName =Encryption.EncryptionHandler.Base64Decode(entry.ExpenseName),
 							ExpenseCost = entry.Cost,
 							Interval = entry.Interval
 						});

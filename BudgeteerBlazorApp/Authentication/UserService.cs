@@ -1,5 +1,6 @@
 ﻿using Budgeteer.Core;
 using Budgeteer.Plugins.EFDB;
+using Budgeteer.Plugins.Encryption;
 
 namespace BudgeteerBlazorApp.Authentication
 {
@@ -11,7 +12,7 @@ namespace BudgeteerBlazorApp.Authentication
 
 		public User? GetByUserName(string userName)
 		{
-			currentUser = context.Users.First(x => x.UserName == userName);
+			currentUser = context.Users.First(x => x.UserName == EncryptionHandler.Base64Encode(userName));
 
 			if (currentUser != null)
 			{

@@ -49,30 +49,30 @@
 </EditForm>
 
 @code {
-	private User user = new User();
-	private string userInput = string.Empty;
+    private User user = new User();
+    private string userInput = string.Empty;
 
 
-	private async Task Authenticate()
-	{
-		try
-		{
-			var userAccount = userService.GetByUserName(user.UserName);
-			if (userAccount != null)
-			{
-				var userSalt = userService.GetSaltByUserReference(userAccount);
-				if (userSalt != null && 
-					userAccount.HashedPassword != Budgeteer.Plugins.Encryption.EncryptionHandler.HashPassword(userInput, userSalt.Salt))
+    private async Task Authenticate()
+    {
+        try
+        {
+            var userAccount = userService.GetByUserName(user.UserName);
+            if (userAccount != null)
+            {
+                var userSalt = userService.GetSaltByUserReference(userAccount);
+                if (userSalt != null && 
+                    userAccount.HashedPassword != Budgeteer.Plugins.Encryption.EncryptionHandler.HashPassword(userInput, userSalt.Salt))
+                {
+                    await js.InvokeVoidAsync("alert", "Invalid user name or password.");
+                    return;
+                }
+            }
+
+            var customAuthenticationStateProvider = (CustomAuthenticationStateProvider)authenticationStateProvider;
+            await customAuthenticationStateProvider.UpdateUthenticationState(new UserSession
 				{
-					await js.InvokeVoidAsync("alert", "Invalid user name or password.");
-					return;
-				}
-			}
-
-			var customAuthenticationStateProvider = (CustomAuthenticationStateProvider)authenticationStateProvider;
-			await customAuthenticationStateProvider.UpdateUthenticationState(new UserSession
-				{
-					UserName = userAccount.UserName
+					UserName = Budgeteer.Plugins.Encryption.EncryptionHandler.Base64Decode(userAccount.UserName)
 				});
 			userSession.IsLoggedIn = true;
 			await ViewExpensesByUserReference.ExecuteAsync(user);
